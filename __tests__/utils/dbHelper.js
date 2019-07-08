@@ -13,4 +13,9 @@ const disconnect = () => {
   mongoose.connection.close()
 }
 
-module.exports = { connect, disconnect, mongoose }
+const truncate = () =>
+  Promise.all(
+    Object.keys(mongoose.models).map(key => mongoose.models[key].deleteMany())
+  )
+
+module.exports = { connect, disconnect, mongoose, truncate }

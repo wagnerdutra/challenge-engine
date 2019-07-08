@@ -1,5 +1,12 @@
 const routes = require('express').Router()
+const validator = require('express-validation')
 
-routes.get('/', (_, res) => res.send('hello world'))
+const ChallengeController = require('./app/controllers/ChallengeController')
+
+const ChallengeValidation = require('../src/app/validators/Challenge')
+
+routes.post('/', validator(ChallengeValidation), ChallengeController.create)
+
+routes.get('/', ChallengeController.find)
 
 module.exports = routes
