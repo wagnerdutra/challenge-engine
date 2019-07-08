@@ -13,7 +13,10 @@ class App {
   constructor() {
     this.express = express()
 
-    this.database()
+    if (process.env.NODE_ENV !== 'test') {
+      this.database()
+    }
+
     this.middlewares()
     this.routes()
     this.exception()
