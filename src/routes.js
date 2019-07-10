@@ -6,12 +6,14 @@ const ChallengeController = require('./app/controllers/ChallengeController')
 
 const ChallengeValidation = require('../src/app/validators/Challenge')
 
+const authMiddleware = require('../src/app/middlewares/authMiddleware')
+
 routes.post(
   '/',
   validator(ChallengeValidation),
   handler(ChallengeController.create)
 )
 
-routes.get('/', handler(ChallengeController.find))
+routes.get('/', handler(authMiddleware), handler(ChallengeController.find))
 
 module.exports = routes
