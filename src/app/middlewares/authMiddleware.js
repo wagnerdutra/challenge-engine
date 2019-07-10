@@ -3,7 +3,7 @@ const {
   baseUrl,
   port,
   authenticationRoutePath
-} = require('../../config/userChallenge')
+} = require('../../config/userEngine')
 
 module.exports = async (req, res, next) => {
   const authHeader = req.headers.authorization
