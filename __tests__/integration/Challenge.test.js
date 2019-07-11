@@ -1,6 +1,20 @@
 const { connect, disconnect, truncate } = require('../utils/dbHelper')
 const { createChalenge, getChallenge } = require('../utils/challenge')
 
+const axios = require('axios')
+const MockAdapter = require('axios-mock-adapter')
+const mock = new MockAdapter(axios)
+
+const {
+  baseUrl,
+  port,
+  authenticationRoutePath
+} = require('../../src/config/userEngine')
+
+mock
+  .onGet(`${baseUrl}:${port}/${authenticationRoutePath}`)
+  .reply(200, { ok: true })
+
 describe('Challenge', () => {
   beforeAll(() => connect())
   afterAll(() => disconnect())

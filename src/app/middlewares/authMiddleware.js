@@ -1,9 +1,6 @@
-const axios = require('axios')
-const {
-  baseUrl,
-  port,
-  authenticationRoutePath
-} = require('../../config/userEngine')
+const { userEngineHttpRequest } = require('../services/axios')
+
+const { authenticationRoutePath } = require('../../config/userEngine')
 
 module.exports = async (req, res, next) => {
   const authHeader = req.headers.authorization
@@ -16,8 +13,8 @@ module.exports = async (req, res, next) => {
 
   const Authorization = `Bearer ${token}`
 
-  axios
-    .get(`${baseUrl}:${port}/${authenticationRoutePath}`, {
+  userEngineHttpRequest
+    .get(`/${authenticationRoutePath}`, {
       headers: { Authorization }
     })
     .then(() => next())

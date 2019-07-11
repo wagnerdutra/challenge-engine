@@ -10,13 +10,17 @@ const initialChallenge = {
 
 const createChalenge = async (challenge = {}) => {
   const response = await request(app)
-    .post('/')
+    .post('/createChallenge')
     .send({ ...initialChallenge, ...challenge })
   return response
 }
 
+const token = '123456'
+
 const getChallenge = async () => {
-  const response = await request(app).get('/')
+  const response = await request(app)
+    .get('/getDayChallenge')
+    .set('Authorization', `Bearer ${token}`)
   return response
 }
 
