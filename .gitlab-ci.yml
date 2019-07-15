@@ -30,9 +30,9 @@ build_env_file_ite:
     - sed -i "s/FLAG_USER_ENGINE_AUTHENTICATION_ROUTE_PATH/$APP_PORT/g" .env.gitlab
     - mv .env.gitlab .env
 
-testing_testing:
-  stage: test
-  script: yarn test
+# testing_testing:
+#   stage: test
+#   script: yarn test
 
 build_docker_image:
   stage: build
