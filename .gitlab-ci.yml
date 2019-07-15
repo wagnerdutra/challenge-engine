@@ -19,3 +19,26 @@ install_dependencies:
 testing_testing:
   stage: test
   script: yarn test
+
+build_env_file_ite:
+  stage: build
+  image: registry.gitlab.com/gitlab-examples/kubernetes-deploy
+  script:
+    - sed -i "s/FLAG_APP_PORT/$APP_PORT/g" .env.gitlab
+    - sed -i "s/FLAG_ENV/development/g" .env.gitlab
+    - sed -i "s/FLAG_MONGO/mongodb:\/\/$MONGO_DB_USER_IP:27017\/$MONGO_DB_USER_NAME/g" .env.gitlab
+    - sed -i "s/FLAG_USER_ENGINE_URL/$APP_PORT/g" .env.gitlab
+    - sed -i "s/FLAG_USER_ENGINE_PORT/$APP_PORT/g" .env.gitlab
+    - sed -i "s/FLAG_USER_ENGINE_AUTHENTICATION_ROUTE_PATH/$APP_PORT/g" .env.gitlab
+    - mv .env.gitlab .env
+
+build_docker_image:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
