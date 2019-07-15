@@ -1,7 +1,9 @@
 image: node:latest
 
 stages:
-  - build
+  - build_env_file
+  - build_docker_image
+  - build_application
   - test
 
 cache:
@@ -16,10 +18,6 @@ install_dependencies:
     paths:
       - node_modules/
 
-testing_testing:
-  stage: test
-  script: yarn test
-
 build_env_file_ite:
   stage: build
   image: registry.gitlab.com/gitlab-examples/kubernetes-deploy
@@ -31,6 +29,10 @@ build_env_file_ite:
     - sed -i "s/FLAG_USER_ENGINE_PORT/$APP_PORT/g" .env.gitlab
     - sed -i "s/FLAG_USER_ENGINE_AUTHENTICATION_ROUTE_PATH/$APP_PORT/g" .env.gitlab
     - mv .env.gitlab .env
+
+testing_testing:
+  stage: test
+  script: yarn test
 
 build_docker_image:
   stage: build
