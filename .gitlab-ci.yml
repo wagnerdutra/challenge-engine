@@ -4,10 +4,11 @@ stages:
   - dockerize
   - deploy
 
-job_name:
-  stage: build
-  script:
-    - export
+# uncomment bellow to see Env Variables
+# job_name:
+#   stage: build
+#   script:
+#     - export
 
 cache:
   paths:
@@ -34,6 +35,7 @@ build_env_file_ite:
     - sed -i "s/FLAG_USER_ENGINE_PORT//g" .env.gitlab
     - sed -i "s/FLAG_USER_ENGINE_AUTHENTICATION_ROUTE_PATH//g" .env.gitlab
     - mv .env.gitlab .env
+    - cat .env
 
 # testing_with_yarn:
 #   image: node:latest
@@ -43,8 +45,6 @@ build_env_file_ite:
 build_docker_image:
   stage: dockerize
   image: docker:stable
-  services:
-    - docker:dind
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build --build-arg APP_PORT=$APP_PORT -t challenge_image:${CI_COMMIT_SHORT_SHA} .
