@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "challenge-engine-chart.fullname" . }}-test-connection"
+  labels:
+{{ include "challenge-engine-chart.labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['{{ include "challenge-engine-chart.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
