@@ -10,6 +10,7 @@ cache:
 
 install_dependencies:
   image: node:latest
+
   stage: build
   script:
     - yarn install
@@ -29,10 +30,10 @@ build_env_file_ite:
     - sed -i "s/FLAG_USER_ENGINE_AUTHENTICATION_ROUTE_PATH//g" .env.gitlab
     - mv .env.gitlab .env
 
-testing_with_yarn:
-  image: node:latest
-  stage: test
-  script: yarn test
+# testing_with_yarn:
+#   image: node:latest
+#   stage: test
+#   script: yarn test
 
 build_docker_image:
   stage: dockerize
