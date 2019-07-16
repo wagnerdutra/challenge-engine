@@ -5,6 +5,7 @@ stages:
   - deploy
 
 job_name:
+  stage: build
   script:
     - export
 
