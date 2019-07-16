@@ -4,6 +4,10 @@ stages:
   - dockerize
   - deploy
 
+job_name:
+  script:
+    - export
+
 cache:
   paths:
     - node_modules/
