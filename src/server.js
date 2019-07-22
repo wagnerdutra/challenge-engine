@@ -26,7 +26,6 @@ class App {
   }
 
   sentry() {
-    console.log(sentryConfig)
     Sentry.init(sentryConfig)
   }
 
