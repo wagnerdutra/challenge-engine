@@ -15,5 +15,5 @@ RUN yarn
 # Bundle app source
 COPY . .
 
-EXPOSE $APP_PORT
+EXPOSE 9443
 CMD [ "yarn", "prod" ]
