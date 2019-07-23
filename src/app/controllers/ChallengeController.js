@@ -1,6 +1,5 @@
 const Challenge = require('../models/Challenge')
 const moment = require('moment')
-
 class ChallengeController {
   async create(req, res) {
     if (
