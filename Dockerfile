@@ -1,11 +1,8 @@
-FROM node:10.16.0-alpine
-RUN mkdir -p /code
-WORKDIR /code
-ADD . /code
-RUN npm install -g -s --no-progress yarn && \
-    yarn && \
-    yarn run build && \
-    yarn run prune && \
-    yarn cache clean
-CMD [ "yarn", "start" ]
+FROM node:10-slim
+ENV HOME=/home/app
+COPY package.json package-lock.json $HOME/node_docker/
+WORKDIR $HOME/node_docker
+RUN yarn && yarn cache clean
+COPY . $HOME/node_docker
+CMD ["yarn","start"]
 EXPOSE 9443
