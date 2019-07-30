@@ -1,4 +1,4 @@
-const { connect, disconnect, truncate } = require('../utils/dbHelper')
+const DbHelper = require('../utils/dbHelper')
 const { createChalenge, getChallenge } = require('../utils/challenge')
 
 const axios = require('axios')
@@ -16,10 +16,11 @@ mock
   .reply(200, { ok: true })
 
 describe('Challenge', () => {
-  beforeAll(() => connect())
-  afterAll(() => disconnect())
+  beforeAll(() => DbHelper.connect())
 
-  beforeEach(() => truncate())
+  afterAll(() => DbHelper.disconnect())
+
+  beforeEach(() => DbHelper.truncate())
 
   it('should insert the challenge and return ok', async () => {
     const response = await createChalenge()

@@ -1,21 +1,36 @@
 const mongoose = require('mongoose')
-const { uri } = require('../../src/config/database')
+const { MongoMemoryServer } = require('mongodb-memory-server')
 
-const connect = () => {
-  mongoose.connect(uri, {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useFindAndModify: false
-  })
+class DbHelper {
+  constructor() {
+    this.mongoServer = new MongoMemoryServer()
+  }
+
+  async connect() {
+    const mongoUri = await this.mongoServer.getConnectionString()
+    await mongoose.connect(
+      mongoUri,
+      {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useFindAndModify: false
+      },
+      err => {
+        if (err) console.error(err)
+      }
+    )
+  }
+
+  async disconnect() {
+    await mongoose.disconnect()
+    await this.mongoServer.stop()
+  }
+
+  truncate() {
+    Promise.all(
+      Object.keys(mongoose.models).map(key => mongoose.models[key].deleteMany())
+    )
+  }
 }
 
-const disconnect = () => {
-  mongoose.connection.close()
-}
-
-const truncate = () =>
-  Promise.all(
-    Object.keys(mongoose.models).map(key => mongoose.models[key].deleteMany())
-  )
-
-module.exports = { connect, disconnect, mongoose, truncate }
+module.exports = new DbHelper()
